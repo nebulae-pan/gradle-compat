@@ -6,7 +6,9 @@ import org.gradle.api.Project
 
 class GradleCompat {
     fun apply(project: Project) {
-
         project.extensions.getByType(AppExtension::class.java)
+            .applicationVariants.forEach {
+
+            }
     }
 }
