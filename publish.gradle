@@ -1,0 +1,57 @@
+def version = "0.0.0-test"
+
+project.subprojects {
+    it.group = "io.nebula.platform"
+    it.version = version
+}
+
+def file = rootProject.file('local.properties')
+if (file.exists()) {
+
+    def inputStream = rootProject.file('local.properties').newDataInputStream();
+    def properties = new Properties()
+    properties.load(inputStream)
+    properties.propertyNames().each {
+        ext.set(it, properties.getProperty(it))
+    }
+}
+gradle.addProjectEvaluationListener(new ProjectEvaluationListener() {
+    @Override
+    void beforeEvaluate(Project project) {
+
+    }
+
+    @Override
+    void afterEvaluate(Project project, ProjectState projectState) {
+        if (project.rootProject == project) {
+            return
+        }
+        if (project.name == 'app') {
+            return
+        }
+        project.apply plugin: 'maven-publish'
+        project.publishing {
+            repositories {
+                maven {
+                    name "local"
+                    def localRepo = project.rootProject.rootDir
+                    if (localRepo.name == "plugin") {
+                        localRepo = localRepo.parentFile
+                    }
+                    url new File(localRepo, "build/repo")
+                }
+                maven {
+                    name "remote"
+                    url MAVEN_REPO
+                    credentials.username = MAVEN_USER
+                    credentials.password = MAVEN_PASSWORD
+                }
+            }
+            publications { container ->
+                def pub = container.maybeCreate("gradleCompat", MavenPublication)
+                pub.artifactId project.name
+                pub.from project.components.java
+            }
+        }
+    }
+})

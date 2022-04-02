@@ -1,2 +1,5 @@
 include ':gradle-compat'
 include ':app'
+include ':compat-api'
+include ':compat-3-6'
+include ':compat-7-1'

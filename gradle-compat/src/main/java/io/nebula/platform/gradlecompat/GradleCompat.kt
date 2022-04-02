@@ -1,14 +1,25 @@
 package io.nebula.platform.gradlecompat
 
-import com.android.build.gradle.AppExtension
+import io.nebula.platform.gradlecompat.api.IMergedManifestProcessor
+import io.nebula.platform.gradlecompat.api.IVariantManager
 import org.gradle.api.Project
 
 
-class GradleCompat {
-    fun apply(project: Project) {
-        project.extensions.getByType(AppExtension::class.java)
-            .applicationVariants.forEach {
+object GradleCompat {
+    private var compatCore: CompatCore? = null
 
-            }
+    fun variantManager(project: Project): IVariantManager {
+        return compatCore(project).getVariantManager()
+    }
+
+    fun mergedManifestProcessor(project: Project): IMergedManifestProcessor {
+        return compatCore(project).getMergedProcessor()
+    }
+
+    private fun compatCore(project: Project): CompatCore {
+        val core = compatCore ?: CompatCore(project).apply {
+            compatCore = this
+        }
+        return core
     }
 }

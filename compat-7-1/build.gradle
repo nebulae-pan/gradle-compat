@@ -1,13 +1,18 @@
 plugins {
-    id 'kotlin'
+    id 'groovy'
 }
 
 dependencies {
-    implementation project(":compat-3-6")
-    implementation project(":compat-7-1")
-    api project(":compat-api")
+    implementation project(":compat-api")
     compileOnly "com.android.tools.build:gradle:7.1.2"
-    compileOnly "com.android.tools:common:30.1.2"
     compileOnly gradleApi()
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs 'src/main/java'
+        }
+    }
 }
