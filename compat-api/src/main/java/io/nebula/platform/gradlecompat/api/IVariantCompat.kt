@@ -9,5 +9,6 @@ interface IVariantCompat {
     fun getComponentInfo(): IComponentInfoCompat
     fun getApplicationId(): String
     fun setApplicationId(applicationId: String)
+    fun putManifestPlaceHolder(key: String, value: String)
     fun realVariant(): Any?
 }

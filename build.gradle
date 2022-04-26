@@ -47,3 +47,21 @@ task fullDeploy {
         }
     }
 }
+
+task fullDeployRemote {
+    if (gradle.startParameter.getTaskNames().any { it.contains("fullDeployRemote") }) {
+        gradle.projectsEvaluated {
+            def taskName = "publishGradleCompatPublicationToRemoteRepository"
+            def taskList = new ArrayList<Object>()
+
+            taskList.add(getNamedTask("compat-3-6", taskName))
+            taskList.add(getNamedTask("compat-7-1", taskName))
+            taskList.add(getNamedTask("gradle-compat", taskName))
+            taskList.add(getNamedTask("compat-api", taskName))
+
+            taskList.forEach {
+                fullDeployRemote.dependsOn(it)
+            }
+        }
+    }
+}

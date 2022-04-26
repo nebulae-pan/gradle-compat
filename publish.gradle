@@ -1,4 +1,4 @@
-def version = "0.0.0-test"
+def version = "1.0.0-beta2"
 
 project.subprojects {
     it.group = "io.nebula.platform"
@@ -43,6 +43,7 @@ gradle.addProjectEvaluationListener(new ProjectEvaluationListener() {
                 maven {
                     name "remote"
                     url MAVEN_REPO
+                    allowInsecureProtocol true
                     credentials.username = MAVEN_USER
                     credentials.password = MAVEN_PASSWORD
                 }

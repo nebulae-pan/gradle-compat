@@ -9,5 +9,5 @@ import java.io.File
  */
 interface IMergedManifestProcessor {
 
-    fun processManifestFiles(action: (ComponentArtifactIdentifier, File) -> Unit)
+    fun processManifestFiles(variantName:String, action: (ComponentArtifactIdentifier, File) -> Unit)
 }

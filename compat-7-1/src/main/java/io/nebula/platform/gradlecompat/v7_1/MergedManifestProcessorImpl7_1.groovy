@@ -20,19 +20,20 @@ class MergedManifestProcessorImpl7_1 implements IMergedManifestProcessor {
     }
 
     @Override
-    void processManifestFiles(@NotNull Function2<? super ComponentArtifactIdentifier, ? super File, Unit> action) {
-        mProject.afterEvaluate {
-            mProject.plugins.getPlugin(AppPlugin).variantManager.mainComponents.forEach {
-                def manifestArtifacts = it.variant
-                        .variantDependencies
-                        .getArtifactCollection(
-                                ConsumedConfigType.RUNTIME_CLASSPATH,
-                                ArtifactScope.ALL,
-                                AndroidArtifacts.ArtifactType.MANIFEST
-                        ).artifacts
-                for (def artifact : manifestArtifacts) {
-                    action.invoke(artifact.id, artifact.file)
-                }
+    void processManifestFiles(String variantName, @NotNull Function2<? super ComponentArtifactIdentifier, ? super File, Unit> action) {
+        mProject.plugins.getPlugin(AppPlugin).variantManager.mainComponents.forEach {
+            if (it.variant.name != variantName) {
+                return
+            }
+            def manifestArtifacts = it.variant
+                    .variantDependencies
+                    .getArtifactCollection(
+                            ConsumedConfigType.RUNTIME_CLASSPATH,
+                            ArtifactScope.ALL,
+                            AndroidArtifacts.ArtifactType.MANIFEST
+                    ).artifacts
+            for (def artifact : manifestArtifacts) {
+                action.invoke(artifact.id, artifact.file)
             }
         }
     }

@@ -50,6 +50,6 @@ class TaskContainerImpl7_1 implements ITaskContainerCompat {
 
     @Override
     Task getCompressAssetsTask() {
-        return getTaskByProvider(mVariant.computeTaskName("compress", "Assets"))
+        return getTaskByProvider(mProject.tasks.named(mVariant.computeTaskName("compress", "Assets")))
     }
 }

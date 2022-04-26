@@ -42,6 +42,11 @@ class VariantCompatImpl7_1 implements IVariantCompat {
     }
 
     @Override
+    void putManifestPlaceHolder(@NotNull String key, @NotNull String value) {
+        mVariant.variantDslInfo.mergedFlavor.manifestPlaceholders.put(key, value)
+    }
+
+    @Override
     Object realVariant() {
         return mProject.getExtensions().findByType(AppExtension).applicationVariants.find {
             it.name == getName()

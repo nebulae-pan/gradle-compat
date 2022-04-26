@@ -32,6 +32,11 @@ class VariantCompatImpl3_6(
         flavor.applicationId = applicationId
     }
 
+    override fun putManifestPlaceHolder(key: String, value: String) {
+        val flavor = variant.variantData.variantConfiguration.mergedFlavor as MergedFlavor
+        flavor.manifestPlaceholders[key] = value
+    }
+
     override fun realVariant(): Any? {
         return project.extensions
             .findByType(AppExtension::class.java)?.applicationVariants?.find {
